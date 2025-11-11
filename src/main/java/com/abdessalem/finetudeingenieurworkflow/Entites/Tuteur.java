@@ -1,0 +1,52 @@
+package com.abdessalem.finetudeingenieurworkflow.Entites;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
+import lombok.*;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+@Entity
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+@Data
+
+@Table(name = "Tuteur")
+public class Tuteur extends User implements Serializable{
+
+    @Column(name = "is_Chef_Options")
+    private boolean is_Chef_Options;
+    @Column(name = "is_Chef_departement")
+    private boolean is_Chef_departement;
+    @Column(name="specialite_up")
+    private String specialiteUp;
+    @Column(name="nationality")
+    private String nationality;
+    private String image;
+    private String departementName;
+    @Temporal(TemporalType.DATE)
+    private Date dateEmbauche;
+    @Column(name = "github_token", length = 512)
+    @Convert(converter = GithubTokenConverter.class)
+    private String githubToken;
+    @Column(name = "sonar_organization")
+    private String sonarOrganization; // Organisation SonarCloud
+
+    @Column(name = "sonar_token", length = 512)
+    @Convert(converter = GithubTokenConverter.class) // 👈 Même convertisseur
+    private String sonarToken;
+    @JsonIgnore
+    @OneToMany(mappedBy = "tuteur", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Sujet> sujets;
+    @JsonIgnore
+    @OneToMany(mappedBy = "tuteur", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Form> forms;
+
+    @OneToMany(mappedBy = "tuteur", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    private List<Appreciation> appreciations = new ArrayList<>();
+}
