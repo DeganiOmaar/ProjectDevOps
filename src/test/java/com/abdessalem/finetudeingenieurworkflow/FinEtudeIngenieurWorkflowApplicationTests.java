@@ -9,7 +9,7 @@ import org.springframework.boot.autoconfigure.sql.init.SqlInitializationAutoConf
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
-@SpringBootTest(exclude = {
+@SpringBootTest(excludeAutoConfiguration = {
     DataSourceAutoConfiguration.class,
     HibernateJpaAutoConfiguration.class,
     SqlInitializationAutoConfiguration.class
