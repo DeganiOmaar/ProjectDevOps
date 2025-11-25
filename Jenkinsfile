@@ -3,7 +3,11 @@ pipeline {
 
     tools {
         jdk 'jdk-21'
-        maven 'M3'   // we will define this name in Jenkins Tools
+        maven 'M3'
+    }
+
+    environment {
+        DOCKER_IMAGE = "laamyr/devops_project"
     }
 
     stages {
@@ -22,6 +26,25 @@ pipeline {
         stage('Test') {
             steps {
                 sh 'mvn test'
+            }
+        }
+
+        stage('Build Docker Image') {
+            steps {
+                sh 'docker build -t $DOCKER_IMAGE:latest .'
+            }
+        }
+
+        stage('Push to Docker Hub') {
+            steps {
+                withCredentials([usernamePassword(
+                    credentialsId: '631badad-db2c-466e-9628-120a3768556c',
+                    usernameVariable: 'DOCKER_USER',
+                    passwordVariable: 'DOCKER_PASS'
+                )]) {
+                    sh 'echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin'
+                    sh 'docker push $DOCKER_IMAGE:latest'
+                }
             }
         }
     }
