@@ -6,7 +6,7 @@ metadata:
   name: spring-config
   namespace: devops
 data:
-  DB_URL: "jdbc:mysql://mysql:3306/mydb"
+  DB_URL: "jdbc:postgresql://postgres:5432/mydb"
 ---
 # Secret
 apiVersion: v1
