@@ -61,6 +61,21 @@ pipeline {
                 }
             }
         }
+
+        stage('Deploy to Kubernetes') {
+            steps {
+                script {
+                    env.PATH = "/usr/local/bin:${env.PATH}"
+                }
+                withCredentials([file(credentialsId: 'kubeconfig-credentials', variable: 'KUBECONFIG')]) {
+                    sh '''
+                        /usr/local/bin/kubectl apply -f mysql-deployment.yaml -n devops
+                        /usr/local/bin/kubectl apply -f spring-deployment.yaml -n devops
+                        /usr/local/bin/kubectl rollout status deployment/spring-app -n devops --timeout=5m
+                    '''
+                }
+            }
+        }
     }
 
     post {
