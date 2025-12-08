@@ -39,12 +39,18 @@ pipeline {
 
         stage('Build Docker Image') {
             steps {
+                script {
+                    env.PATH = "/usr/local/bin:${env.PATH}"
+                }
                 sh '/usr/local/bin/docker build -t $DOCKER_IMAGE:latest .'
             }
         }
 
         stage('Push to Docker Hub') {
             steps {
+                script {
+                    env.PATH = "/usr/local/bin:${env.PATH}"
+                }
                 withCredentials([usernamePassword(
                     credentialsId: '631badad-db2c-466e-9628-120a3768556c',
                     usernameVariable: 'DOCKER_USER',
