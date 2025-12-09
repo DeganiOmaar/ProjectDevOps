@@ -59,18 +59,6 @@ spec:
             secretKeyRef:
               name: spring-secret
               key: DB_PASSWORD
-        livenessProbe:
-          httpGet:
-            path: /actuator/health
-            port: 8080
-          initialDelaySeconds: 60
-          periodSeconds: 10
-        readinessProbe:
-          httpGet:
-            path: /actuator/health
-            port: 8080
-          initialDelaySeconds: 30
-          periodSeconds: 5
 ---
 # Service
 apiVersion: v1
